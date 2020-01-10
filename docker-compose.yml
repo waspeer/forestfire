@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  users-service:
+    build:
+      context: .
+      dockerfile: ./users-service/Dockerfile
+    volumes:
+      - ./users-service/src:/usr/app/src
+      - ./core:/user/app/core
+    environment:
+      - NODE_ENV=development
+      - DB_URL=postgres://postgres:password@users-service-db/forestfire
+      - DB_NAME=forestfire
+      - DB_TYPE=postgres
+    command: yarn dev
+    depends_on:
+      - users-service-db
+
+  users-service-db:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=forestfire
+    ports:
+      - 0.0.0.0:7200:5432
