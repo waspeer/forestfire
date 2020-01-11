@@ -11,6 +11,7 @@ const routes: ServerRoute[] = [
     method: 'POST',
     path: '/users',
     options: {
+      cors: true,
       ...createUserController.apply()
     }
   }
