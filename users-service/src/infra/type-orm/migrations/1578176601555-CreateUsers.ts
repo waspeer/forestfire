@@ -21,6 +21,16 @@ export class CreateUsers1578176601555 implements MigrationInterface {
           {
             name: 'passwordHash',
             type: 'text'
+          },
+          {
+            name: 'createdAt',
+            type: 'timestamp',
+            default: 'CURRENT_TIMESTAMP'
+          },
+          {
+            name: 'updatedAt',
+            type: 'timestamp',
+            default: 'CURRENT_TIMESTAMP'
           }
         ]
       })
