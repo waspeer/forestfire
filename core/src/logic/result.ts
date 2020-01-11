@@ -1,19 +1,18 @@
 /* eslint-disable no-inner-declarations */
-/* eslint class-methods-use-this: ["error", { "exceptMethods": ["isFailure", "isSuccess", "value"] }] */
+/* eslint class-methods-use-this: ["error", { "exceptMethods": ["isFailure", "isSuccess", "value", "error"] }] */
 /* eslint max-classes-per-file: ["error", 2] */
 
+import { IDomainError } from './domain-error';
+
 /**
- * Repesents a type that is either a successful result or an error.
- *
- * @template L - The type of the unsuccesful result.
- * @template A - The type of the successful result.
+ * The errorType of an untyped error
  */
-export type Either<L, A> = Failure<L, A> | Success<L, A>;
+const UNTYPED_ERROR = 'UNTYPED_ERROR' as const;
 
 /**
  * Base Failure class.
  */
-export class Failure<L, A = any> {
+export class Failure<L extends IDomainError<any>, A = any> {
   readonly error: L;
 
   /**
@@ -22,7 +21,10 @@ export class Failure<L, A = any> {
    * @param {any} error - The error that occured
    */
   constructor(error: L) {
-    this.error = error;
+    this.error = {
+      ...error,
+      type: error.type || UNTYPED_ERROR
+    } as L;
   }
 
   get value(): A {
@@ -45,7 +47,7 @@ export class Failure<L, A = any> {
 /**
  * Base Success class
  */
-export class Success<L, A> {
+export class Success<L extends IDomainError<any>, A> {
   private readonly _value?: A;
 
   /**
@@ -74,12 +76,34 @@ export class Success<L, A> {
 }
 
 /**
- * The generic interface of the errors in the domain.
+ * Repesents a type that is either a successful result or an error.
+ *
+ * @template L - The type of the unsuccesful result.
+ * @template A - The type of the successful result.
  */
-export interface IDomainError {
-  message: string;
-  error?: any;
-}
+export type Either<L extends IDomainError<any>, A> =
+  | Failure<L, A>
+  | Success<L, A>;
+
+/**
+ * Represents a return value that is either a DomainError or a succesful
+ * result of type T.
+ *
+ * @template T - The type of the result when it's successful.
+ */
+export type ErrorOr<T> = Either<IDomainError<any>, T>;
+
+/**
+ * Represents a return value that is either a typed or untyped domainError or
+ * a successful result.
+ *
+ * @template E - The possible errorTypes.
+ * @template R - The type of the result.
+ */
+export type EitherResponse<E extends string, R> = Either<
+  IDomainError<E> | IDomainError<any>,
+  R
+>;
 
 /**
  * A result that is either successful or unsuccessful.
@@ -90,12 +114,15 @@ namespace Result {
    * Create a Failure result
    *
    * @constructs Failure
-   * @param {(string|{message: string, error: any})} l - The domain error that occured. Can be either a string or implement the IDomainError interface
+   * @param {(string|{message: string, error: any})} l - The domain error that occured.
+   * Can be either a string or implement the IDomainError interface
    */
   export function fail<L extends string, A = any>(
     l: L
-  ): Either<IDomainError, A>;
-  export function fail<L extends IDomainError, A = any>(l: L): Either<L, A>;
+  ): Either<IDomainError<any>, A>;
+  export function fail<L extends IDomainError<any>, A = any>(
+    l: L
+  ): Either<L, A>;
   export function fail(l: any): any {
     if (typeof l === 'string') return new Failure({ message: l });
     return new Failure(l);
@@ -107,7 +134,9 @@ namespace Result {
    * @constructs Success
    * @param {any} a - The value of the result.
    */
-  export function ok<A, L = any>(a?: A): Either<L, A> {
+  export function ok<A, L extends IDomainError<any> = IDomainError<any>>(
+    a?: A
+  ): Either<L, A> {
     return new Success<L, A>(a);
   }
 
@@ -117,7 +146,9 @@ namespace Result {
    *
    * @param {Array.<Result>} results
    */
-  export function combine<L, A>(results: Either<L, A>[]): Either<L, A> {
+  export function combine<L extends IDomainError<any>, A>(
+    results: Either<L, A>[]
+  ): Either<L, A> {
     return results.reduce((combinedResult, result) => {
       if (combinedResult.isFailure()) {
         return combinedResult;

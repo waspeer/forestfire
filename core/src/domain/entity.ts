@@ -34,6 +34,10 @@ export default abstract class Entity<T extends EntityProps> {
     this.props = props;
   }
 
+  get id(): UniqueEntityID {
+    return this._id;
+  }
+
   /**
    * Determines if the passed Entity is equal to this Entity
    *

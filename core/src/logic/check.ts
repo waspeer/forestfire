@@ -1,6 +1,5 @@
 /* eslint no-shadow: ["error", { "allow": ["result"] }] */
-import Result from './result';
-import { ErrorOr } from './domain-error';
+import Result, { ErrorOr } from './result';
 import { ValidatorFunction } from './validators/types';
 import Exists from './validators/exists';
 import HasLength from './validators/has-length';

@@ -1,4 +1,4 @@
-import { ErrorOr } from '../domain-error';
+import { ErrorOr } from '../result';
 
 /**
  * A function that validates the subject on a specific constraint.

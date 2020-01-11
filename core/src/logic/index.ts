@@ -1,5 +1,5 @@
 import Check from './check';
-import DomainError, { ErrorOr } from './domain-error';
-import Result from './result';
+import Result, { EitherResponse, ErrorOr } from './result';
+import DomainError from './domain-error';
 
-export { Check, DomainError, ErrorOr, Result };
+export { Check, DomainError, EitherResponse, ErrorOr, Result };
