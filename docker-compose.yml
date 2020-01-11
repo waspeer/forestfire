@@ -4,10 +4,10 @@ services:
   users-service:
     build:
       context: .
-      dockerfile: ./users-service/Dockerfile
+      dockerfile: ./users-service.Dockerfile
     volumes:
       - ./users-service/src:/usr/app/src
-      - ./core:/user/app/core
+      - ./core:/usr/app/node_modules/@forestfire/core
     environment:
       - NODE_ENV=development
       - DB_URL=postgres://postgres:password@users-service-db/forestfire
@@ -16,6 +16,8 @@ services:
     command: yarn dev
     depends_on:
       - users-service-db
+    ports:
+      - 0:0:0:0:7100:7000
 
   users-service-db:
     image: postgres:alpine

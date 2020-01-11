@@ -4,9 +4,8 @@ import Router from './router';
 export default class Server {
   static async start() {
     const port = process.env.PORT || 7000;
-    const host = process.env.HOST || 'localhost';
 
-    const server = new Hapi.Server({ port, host });
+    const server = new Hapi.Server({ port });
 
     Router.apply(server);
 

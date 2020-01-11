@@ -1,7 +1,7 @@
-import UserRepo from './typeorm-user-repo';
+import IUserRepo from './user-repo';
+import TypeOrmUserRepo from './typeorm-user-repo';
 import TypeOrmUser from '../infra/type-orm/entities/user';
 
-const userRepo = new UserRepo(TypeOrmUser);
+const typeOrmUserRepo = new TypeOrmUserRepo(TypeOrmUser);
 
-// eslint-disable-next-line import/prefer-default-export
-export { userRepo };
+export { IUserRepo, typeOrmUserRepo as userRepo };

@@ -16,7 +16,10 @@ export default class UserMap extends Mapper<User> {
     return User.create(
       {
         email: UserEmail.create(raw.email).value,
-        password: UserPassword.create(raw.passwordHash).value
+        password: UserPassword.create({
+          value: raw.passwordHash,
+          hashed: true
+        }).value
       },
       new UniqueEntityId(raw.id)
     ).value;

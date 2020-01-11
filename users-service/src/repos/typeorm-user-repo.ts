@@ -1,9 +1,9 @@
-import UserRepoBase from './user-repo-base';
+import IUserRepo from './user-repo';
 import User from '../domain/user';
 import UserEmail from '../domain/user-email';
 import UserMap from '../mappers/user-map';
 
-export default class TypeOrmUserRepo implements UserRepoBase {
+export default class TypeOrmUserRepo implements IUserRepo {
   constructor(private activeRecord: any) {}
 
   public async findUserByEmail(email: UserEmail): Promise<User | null> {

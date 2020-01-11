@@ -1,3 +1,1 @@
-import Server from "./server";
-
-Server.start();
+export * from './models';

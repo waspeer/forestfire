@@ -21,6 +21,7 @@
       { "exceptAfterSingleLine": true }
     ],
     "no-console": "off",
-    "no-underscore-dangle": ["error", { "allowAfterThis": true }]
+    "no-underscore-dangle": ["error", { "allowAfterThis": true }],
+    "@typescript-eslint/indent": "off"
   }
 }

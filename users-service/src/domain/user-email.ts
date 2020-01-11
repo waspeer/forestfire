@@ -1,7 +1,24 @@
-import { Check, Result, ErrorOr, ValueObject } from '@forestfire/core';
+import {
+  Check,
+  Result,
+  EitherResponse,
+  ValueObject,
+  DomainError
+} from '@forestfire/core';
 
 interface UserEmailProps {
   value: string;
+}
+
+export namespace UserEmailErrors {
+  export enum errorTypes {
+    INVALID_EMAIL = 'INVALID_EMAIL'
+  }
+
+  export const invalidEmail = DomainError.create(
+    errorTypes.INVALID_EMAIL,
+    (message?) => message || 'email address is invalid'
+  );
 }
 
 export default class UserEmail extends ValueObject<UserEmailProps> {
@@ -13,11 +30,15 @@ export default class UserEmail extends ValueObject<UserEmailProps> {
     super(props);
   }
 
-  static create(email: string): ErrorOr<UserEmail> {
+  static create(
+    email: string
+  ): EitherResponse<UserEmailErrors.errorTypes, UserEmail> {
     const validatorResult = Check({ email }, [Check.isEmail()]);
 
     if (validatorResult.isFailure()) {
-      return Result.fail(validatorResult.error);
+      return Result.fail(
+        UserEmailErrors.invalidEmail(validatorResult.error.message)
+      );
     }
 
     return Result.ok<UserEmail>(new UserEmail({ value: email }));
