@@ -1,4 +1,6 @@
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 
-createConnection();
+export default async function connectToDatabase() {
+  await createConnection();
+}
