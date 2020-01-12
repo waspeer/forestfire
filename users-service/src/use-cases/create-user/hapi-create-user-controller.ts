@@ -1,5 +1,4 @@
 import { Request, ResponseToolkit } from '@hapi/hapi';
-// import Joi from '@hapi/joi';
 import { EitherResponse, Check } from '@forestfire/core';
 import { HapiBaseController } from '../../infra/http';
 import CreateUserDTO from './create-user-dto';

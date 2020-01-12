@@ -20,9 +20,15 @@ export default abstract class HapiBaseController<
       }
     };
 
+    const validateDefaults = {
+      failAction: (_req: Request, _h: ResponseToolkit, error: Boom.Boom) => {
+        return Boom.badRequest(error.message);
+      }
+    };
+
     return {
-      handler: safeHandler
-      // validate: this.validate
+      handler: safeHandler,
+      validate: { ...validateDefaults, ...this.validate }
     };
   }
 
