@@ -5,7 +5,7 @@
   "license": "MIT",
   "types": "./dist/mod.d.ts",
   "dependencies": {
-    "@hapi/joi": "^17.0.0",
+    "@hapi/joi": "^17.0.2",
     "sanitize-html": "^1.20.1",
     "uuid": "^3.3.3"
   },

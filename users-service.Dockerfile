@@ -1,13 +1,14 @@
 FROM node:13.5.0
 
-WORKDIR /usr/core
-ADD ./core .
-RUN yarn link
-
 WORKDIR /usr/app
-ADD ./users-service/package.json .
-RUN yarn link @forestfire/core
+ADD ./core/package.json ./core/
+ADD ./users-service/package.json ./users-service/
+ADD ./package.json .
 
 RUN yarn --silent
 
-ADD ./users-service .
+ADD ./core ./core
+ADD ./users-service ./users-service
+RUN mv ./users-service/ormconfig.js .
+
+WORKDIR /usr/app/users-service

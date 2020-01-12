@@ -1,5 +1,7 @@
 /* eslint-disable max-classes-per-file */
+import { UseDomainEvents } from '@forestfire/core';
 import { BaseEntity } from 'typeorm';
+import { DomainEvents } from '../domain';
 import IUserRepo from './user-repo';
 import User from '../domain/user';
 import UserEmail from '../domain/user-email';
@@ -33,6 +35,7 @@ export default class TypeOrmUserRepo implements IUserRepo {
     return !!ormUser;
   }
 
+  @UseDomainEvents(DomainEvents)
   public async save(user: User): Promise<void> {
     const exists = await this.exists(user.email);
 

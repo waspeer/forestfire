@@ -1,11 +1,11 @@
 import { Request, ResponseToolkit } from '@hapi/hapi';
-import Joi from '@hapi/joi';
-import { EitherResponse } from '@forestfire/core';
+// import Joi from '@hapi/joi';
+import { EitherResponse, Check } from '@forestfire/core';
 import { HapiBaseController } from '../../infra/http';
 import CreateUserDTO from './create-user-dto';
 import CreateUserErrors from './create-user-errors';
 
-type UseCaseResponse = EitherResponse<CreateUserErrors.errorTypes, void>;
+type UseCaseResponse = EitherResponse<keyof CreateUserErrors.errorTypes, void>;
 
 export default class HapiCreateUserController extends HapiBaseController<
   CreateUserDTO,
@@ -37,9 +37,12 @@ export default class HapiCreateUserController extends HapiBaseController<
   }
 
   validate = {
-    payload: {
-      email: Joi.string().required(),
-      password: Joi.string().required()
+    payload: async ({ email, password }: any) => {
+      const result = Check({ email, password }, [Check.exists()]);
+
+      if (result.isFailure()) {
+        throw new Error(result.error.message);
+      }
     }
   };
 }

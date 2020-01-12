@@ -1,13 +1,15 @@
+/* eslint-disable import/no-cycle */
 import {
+  AggregateRoot,
   Check,
   EitherResponse,
-  Entity,
   UniqueEntityId,
   Result,
   DomainError
 } from '@forestfire/core';
 import UserEmail from './user-email';
 import UserPassword from './user-password';
+import UserEvents from './user-events';
 
 interface UserProps {
   email: UserEmail;
@@ -25,7 +27,7 @@ export namespace UserErrors {
   );
 }
 
-export default class User extends Entity<UserProps> {
+export default class User extends AggregateRoot<UserProps> {
   get email() {
     return this.props.email;
   }
@@ -50,6 +52,13 @@ export default class User extends Entity<UserProps> {
       );
     }
 
-    return Result.ok<User>(new User(props, id));
+    const user = new User(props, id);
+
+    const isNewUser = !id;
+    if (isNewUser) {
+      user.queueEvent(UserEvents.created(user));
+    }
+
+    return Result.ok<User>(user);
   }
 }

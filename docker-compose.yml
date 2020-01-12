@@ -6,8 +6,8 @@ services:
       context: .
       dockerfile: ./users-service.Dockerfile
     volumes:
-      - ./users-service/src:/usr/app/src
-      - ./core:/usr/app/node_modules/@forestfire/core
+      - ./users-service/src:/usr/app/users-service/src
+      - ./core:/usr/app/core
     environment:
       - NODE_ENV=development
       - DB_URL=postgres://postgres:password@users-service-db/forestfire

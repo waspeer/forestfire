@@ -14,6 +14,7 @@ namespace CreateUserErrors {
     ...UserPasswordErrors.errorTypes,
     ...UserErrors.errorTypes
   };
+  export type errorTypes = typeof errorTypes;
 
   export const emailAlreadyExists = DomainError.create(
     errorTypes.EMAIL_ALREADY_EXISTS,

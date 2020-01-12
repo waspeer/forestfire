@@ -1,7 +1,9 @@
+/* eslint-disable import/no-cycle */
 import { Mapper, UniqueEntityId } from '@forestfire/core';
 import User from '../domain/user';
 import UserEmail from '../domain/user-email';
 import UserPassword from '../domain/user-password';
+import { UserDTO } from '../dtos';
 
 export default class UserMap extends Mapper<User> {
   static toPersistence(user: User) {
@@ -23,5 +25,11 @@ export default class UserMap extends Mapper<User> {
       },
       new UniqueEntityId(raw.id)
     ).value;
+  }
+
+  static toDTO(user: User): UserDTO {
+    return {
+      email: user.email.value
+    };
   }
 }

@@ -17,6 +17,10 @@ export default abstract class Entity<T extends EntityProps> {
   protected readonly _id: UniqueEntityID;
   protected props: T;
 
+  get id(): UniqueEntityID {
+    return this._id;
+  }
+
   /**
    * Create an Entity.
    *
@@ -32,10 +36,6 @@ export default abstract class Entity<T extends EntityProps> {
   constructor(props: T, id?: UniqueEntityID) {
     this._id = id || new UniqueEntityID();
     this.props = props;
-  }
-
-  get id(): UniqueEntityID {
-    return this._id;
   }
 
   /**
