@@ -24,7 +24,7 @@
     "@forestfire/core": "1.0.0",
     "@hapi/boom": "^9.0.0",
     "@hapi/hapi": "^18.4.0",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "dotenv": "^8.2.0",
     "hapi-auth-jwt2": "^8.8.1",
     "pg": "^7.17.0",
